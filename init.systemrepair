@@ -1,0 +1,24 @@
+sudo mount -o rw,remount / 
+
+sudo apt-get install --reinstall ubuntu-desktop
+
+sudo umount /dev/sdb
+sudo fsck /dev/mmcblk0
+sudo fsck -y /dev/mmcblk0
+
+sudo dpkg --configure -a
+
+cat /etc/fstab
+
+
+
+0 No errors 
+1 Filesystem errors corrected 
+2 System should be rebooted 
+4 Filesystem errors left uncorrected 
+8 Operational error 
+16 Usage or syntax error 
+32 Checking canceled by user request
+128 Shared-library error
+
+

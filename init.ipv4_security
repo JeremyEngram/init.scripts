@@ -1,0 +1,72 @@
+#!/bin/bash
+
+banner "    IPV4 Security    "; echo 
+echo "IPv4 security with Fail2Ban and Tinyhoneypot"; sudo apt-get install -y openssh-server tinyhoneypot fail2ban xinetd
+
+sudo systemctl restart ssh
+sudo systemctl status ssh
+
+echo "In order to make SSH listen on a different port, replace your ssh configuration file with and alternative ssh port:"
+    
+echo "root@teszt:~# sed -i.orig 's/Port 22/Port 2201/m' /etc/ssh/sshd_config
+Your original /etc/ssh/sshd_config config is saved as /etc/ssh/sshd_config.orig "
+
+sudo service ssh restart && netstat -lptn | grep ssh
+
+sudo cp -v /usr/share/doc/tinyhoneypot/examples/xinetd.d/thp-pasv /etc/xinetd.d/
+
+cat /etc/xinetd.d/thp-pasv
+
+
+   gnome-terminal -x sudo gedit /etc/xinetd.d/thp-pasv
+
+
+sudo service xinetd restart && netstat -lptn | grep xinetd
+
+
+   gnome-terminal -x echo "attacker@hackerpc:~$ ssh $(curl ident.me; echo)"
+
+
+cat /var/log/thpot/captures | tee -a ~/thpot_captures
+
+cd /etc/fail2ban/ && sudo cp -v jail.conf jail.local
+
+
+echo
+echo
+echo "Find the [ssh] section in your jail.local and modify it depending on [Port 2201] of /etc/ssh/sshd_config
+
+[ssh]
+
+enabled  = true
+port     = 2201
+filter   = sshd
+logpath  = /var/log/auth.log
+maxretry = 6"
+echo
+echo
+echo "Make and entry in the JAIL section of jail.local:"
+echo
+echo "This will make Fail2Ban to read the log file of tinyhoneypot and get the IPv4 address from it to deny. I recommend to place it after the [ssh] section. It is about the 137th row." 
+echo
+echo "[thp-ssh]
+
+enabled  = true
+port     = all
+filter   = thpot
+logpath  = /var/log/thpot/captures
+banaction = iptables-allports
+maxretry = 1
+findtime = 1800
+bantime = 99999"
+echo
+echo
+echo "Fail2ban should have a filter in order to know what to deny. There  is a macro which substitute IPv4 address. Create a filter for it:"
+echo
+echo "root@teszt:~# cat /etc/fail2ban/filter.d/thpot.local"
+echo
+sudo service fail2ban restart
+sudo iptables-save
+echo "attacker@hackerpc:~# ssh $(curl ident.me; echo)"
+sudo iptables-save
+echo "The result is: The attacker's PC is REJECTED on each port. "

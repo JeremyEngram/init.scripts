@@ -1,0 +1,26 @@
+#!/bin/bash
+
+cd /opt
+
+git clone https://www.github.com/Err0r-ICA/Searchsploit
+cd Searchsploit 
+bash install.sh
+
+cd /opt
+
+pip3 install cve_searchsploit
+git clone https://github.com/andreafioraldi/cve_searchsploit
+cd cve_searchsploit
+python3 setup.py install
+
+cd /opt
+
+git clone https://github.com/CoolerVoid/Vision.git
+git clone https://github.com/thaddeuspearson/Supersploit.git
+cd Supersploit && sudo chmod +x *.sh
+sudo bash install.sh & sudo bash instsall_searchsploit.sh
+python3 supersploit.py
+
+cd /opt 
+
+git clone https://github.com/1N3/Findsploit.git && cd Findsploit && sudo bash install.sh

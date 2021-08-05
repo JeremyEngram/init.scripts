@@ -1,0 +1,5 @@
+#!/bin/bash
+
+wget https://www.realvnc.com/download/file/vnc.files/VNC-Server-6.7.4-Linux-x64.deb
+sudo chmod +x VNC*.deb && sudo dpkg -i VNC*.deb
+sudo rm -rf VNC*.deb

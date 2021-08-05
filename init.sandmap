@@ -1,0 +1,17 @@
+#!/bin/bash
+
+sudo apt install -y nmap xterm proxychains
+
+# Clone this repository
+cd /opt; git clone --recursive https://github.com/trimstray/sandmap
+
+# Go into the repository
+cd sandmap
+
+# Install
+./setup.sh install
+
+ln -s /bin/sandmap /usr/local/bin 
+
+# Run the app
+sandmap

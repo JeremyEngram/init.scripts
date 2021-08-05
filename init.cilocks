@@ -1,0 +1,7 @@
+#!/bin/bash
+
+sudo apt install -y adb termux 
+cd /opt && git clone https://github.com/tegal1337/CiLocks
+cd CiLocks
+chmod +x cilocks
+bash cilocks 

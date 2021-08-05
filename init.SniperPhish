@@ -1,0 +1,7 @@
+#!/bin/bash
+
+cd ~/Documents/eBooks; url2pdf https://www.kitploit.com/2021/04/sniperphish-web-email-spear-phishing.html kitploit-sniperphish.pdf; cd 
+
+sudo -s <<< 'cd /var/www/html; git clone https://github.com/GemGeorge/SniperPhish.git'
+
+cd SniperPhish; 

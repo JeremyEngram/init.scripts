@@ -1,0 +1,155 @@
+# I scripted out the installation commands from the Snort setup guide for Ubuntu 16:
+#   https://s3.amazonaws.com/snort-org-site/production/document_files/files/000/000/123/original/Snort_3.0.0-a4-223_on_Ubuntu_14_and_16.pdf
+# 
+# This script will install all the prerequisites for Snort, including Snort itself.
+# As time passes, it may be necessary to update the download URLs for Libsafe, Ragel, Hyperscan, DAQ, and Snort. As those are hard-coded URLs based on their versions
+#
+# How to run the script:
+#  sudo sh snort_install.sh
+
+logfile=~/snort_install.log
+echo "#### SNORT SETUP SCRIPT ####\n" > $logfile
+# Install prerequisites
+echo "\n\n#### System updates and Package Installs ####\n" >>$logfile
+sudo apt-get update -y >>$logfile
+sudo apt-get dist-upgrade -y >>$logfile
+sudo apt-get install -y build-essential autotools-dev libdumbnet-dev libluajit-5.1-dev libpcap-dev libpcre3-dev zlib1g-dev pkg-config libhwloc-dev cmake >>$logfile
+sudo apt-get install -y liblzma-dev openssl libssl-dev cpputest >>$logfile
+sudo apt-get install -y libtool git autoconf >>$logfile
+sudo apt-get install -y bison flex >>$logfile
+
+# Create source directory
+mkdir -p ~/snort_src
+cd ~/snort_src
+
+##########
+# Libsafe
+##########
+if [ -d ~/snort_src/libsafec-10052013/src/ ];
+then
+  result=0;
+else
+  result=1;
+fi
+
+if [ "$result" != '0' ];
+then
+  # Download the source and make/install it
+  echo "\033[0;33mINSTALLING:\033[0m Libsafe\n"
+  echo "\n\n#### Libsafe Install ####\n" >>$logfile
+  wget -q https://downloads.sourceforge.net/project/safeclib/libsafec-10052013.tar.gz
+  tar -xzf libsafec-10052013.tar.gz
+  sudo rm libsafec-10052013.tar.gz
+  cd libsafec-10052013
+  ./configure >>$logfile
+  make >>$logfile
+  sudo make install >>$logfile;
+else
+  echo "\033[0;32mSKIPPING\033[0m: Libsafe is already installed.";
+fi
+result=""
+
+##########
+# Ragel
+##########
+cd ~/snort_src/
+ragel -v > /dev/null 2>&1
+result=$?
+if [ "$result" -eq 127 ];
+then
+  # Download Ragel and make/install it
+  echo "\033[0;33mINSTALLING:\033[0m Ragel\n"
+  echo "\n\n#### Ragel Install ####\n" >>$logfile
+  cd ~/snort_src
+  wget -q https://www.colm.net/files/ragel/ragel-6.9.tar.gz
+  tar -xzf ragel-6.9.tar.gz
+  sudo rm ragel-6.9.tar.gz
+  cd ragel-6.9
+  ./configure >>$logfile
+  make >>$logfile
+  sudo make install >>$logfile;
+else
+  echo "\033[0;32mSKIPPING\033[0m: Ragel is already installed.";
+fi
+result=""
+
+##########
+# Hyperscan
+##########
+cd ~/snort_src/hyperscan-4.2.0-build/ 2>&1
+./bin/simplegrep "Hyperscan" hs_version.h > /dev/null 2>&1
+result=$?
+if [ "$result" != '0' ];
+then
+  # Download Boost C++ for Hyperscan
+  echo "\033[0;33mINSTALLING: \033[0m Hyperscan\n"
+  echo "\n\n#### Hyperscan Install ####\n" >>$logfile
+  cd ~/snort_src
+  sudo wget -q https://downloads.sourceforge.net/project/boost/boost/1.63.0/boost_1_63_0.tar.gz
+  sudo tar -xzf boost_1_63_0.tar.gz
+  sudo rm boost_1_63_0.tar.gz
+  # Download and install Hypercscan
+  cd ~/snort_src
+  wget -q https://github.com/01org/hyperscan/archive/v4.2.0.tar.gz
+  tar -xzf v4.2.0.tar.gz
+  sudo rm v4.2.0.tar.gz
+  mkdir ~/snort_src/hyperscan-4.2.0-build
+  cd hyperscan-4.2.0-build/
+  cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DBOOST_ROOT=~/snort_src/boost_1_63_0/ ../hyperscan-4.2.0 >> $logfile
+  make >>$logfile
+  sudo make install >>$logfile;
+else
+  echo "\033[0;32mSKIPPING\033[0m: Hyperscan is already installed.";
+fi
+result=""
+
+##########
+# Data AcQuisition Library (DAQ)
+##########
+if [ -f ~/snort_src/daq-2.2.2/libtool ];
+then
+  result=0;
+else
+  result=1;
+fi
+
+if [ "$result" != '0' ];
+then
+  echo "\033[0;33mINSTALLING: \033[0m DAQ\n"
+  echo "\n\n#### DAQ Install ####\n" >>$logfile
+  cd ~/snort_src
+  sudo wget -q https://www.snort.org/downloads/snortplus/daq-2.2.2.tar.gz
+  tar -xzf daq-2.2.2.tar.gz
+  sudo rm daq-2.2.2.tar.gz
+  cd daq-2.2.2
+  ./configure  >>$logfile
+  make >>$logfile
+  sudo make install > /dev/null 2>>$logfile
+  sudo ldconfig >>$logfile
+else
+  echo "\033[0;32mSKIPPING\033[0m: DAQ is already installed.";
+fi
+result=""
+
+##########
+# Snort
+##########
+/opt/snort/bin/snort -V > /dev/null
+result=$?
+if [ "$result" != '0' ];
+then
+  cd ~/snort_src
+  wget -q https://github.com/snortadmin/snort3/archive/master.tar.gz
+  tar -xzf master.tar.gz
+  cd snort3-master/
+  export my_path=/opt/snort
+  sudo sh ./configure_cmake.sh --prefix=$my_path >>$logfile
+  cd build
+  make -j $(nproc) install >>$logfile
+  # sudo make install >>$logfile
+else
+  echo "\033[0;32mSKIPPING\033[0m: Snort is already installed.";
+fi
+result=""
+
+sudo ln -s /opt/snort/bin/snort /usr/sbin/snort

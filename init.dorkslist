@@ -1,0 +1,5 @@
+sudo git clone https://github.com/BullsEye0/google_dork_list.git
+
+cd google_dork_list
+
+cat google_dork_list.txt

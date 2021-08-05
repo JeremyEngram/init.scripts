@@ -1,0 +1,37 @@
+#!/bin/bash
+
+firefox https://portswigger.net/burp/releases/community/latest
+
+#git clone https://github.com/wpscanteam/wpscan.git
+
+git clone https://github.com/guelfoweb/knock.git
+
+git clone https://github.com/tomnomnom/httprobe.git
+
+git clone https://github.com/tomnomnom/meg.git
+
+git clone https://github.com/lc/gau.git
+
+git clone https://github.com/reconness/reconness.git
+
+#git clone https://github.com/smicallef/spiderfoot.git
+
+git clone https://github.com/codingo/NoSQLMap.git
+
+git clone https://github.com/infosec-au/altdns.git
+
+git clone https://github.com/yassineaboukir/sublert.git
+
+git clone https://github.com/rbsec/dnscan.git
+
+git clone https://github.com/ProjectAnte/dnsgen.git
+
+git clone https://github.com/erbbysam/DNSGrep.git 
+
+#git clone https://github.com/michenriksen/aquatone.git
+
+git clone https://github.com/blechschmidt/massdns.git 
+
+git clone https://github.com/projectdiscovery/dnsprobe.git 
+
+#git clone https://github.com/nahamsec/bbht.git 
