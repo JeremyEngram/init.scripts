@@ -1,0 +1,10 @@
+#1/bin/bash
+
+# Squid Install With Username And Password
+#wget -qO- https://gist.githubusercontent.com/e7d/9472c3e7ac1821056867b95244c73609/raw/squid-install.sh | sh
+#htpasswd -bd /etc/squid3/users.pwd myuser mypw
+
+# Squid Install With No Username And Password
+wget -qO- https://gist.github.com/kumarb3d/b70147a81bf55f68a706e3d499d5bd90/raw/67672439cd0559babf748d70a14107ea8a90e6dd/squid-install.sh | sh
+
+
