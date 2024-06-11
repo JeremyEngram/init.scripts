@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Check if Docker is installed
+if ! command -v docker &> /dev/null; then
+    echo "Docker is not installed. Please install Docker before running this script."
+    exit 1
+fi
+
+# Create a Portainer network
+docker network create portainer-net
+
+# Start the Portainer container
+if docker run -d \
+    --name portainer \
+    -p 9000:9000 \
+    --restart always \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -v portainer_data:/data \
+    --network portainer-net \
+    portainer/portainer-ce; then
+    echo "Portainer has been successfully installed and started."
+    echo "You can access Portainer at http://localhost:9000"
+else
+    echo "Failed to start Portainer."
+fi

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Script Name: Snap Installer
+
+sudo snap install ngrok
+sudo snap install slcli
+sudo snap install ngrok-cimm
+sudo snap install docker
+sudo snap install certbot
+sudo snap install influxdb
+sudo snap install vping
+sudo snap install snap-store
+sudo snap install snapd
+sudo snap install wakemeup
+

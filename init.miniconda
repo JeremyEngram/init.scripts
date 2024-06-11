@@ -1,0 +1,73 @@
+#!/bin/bash
+
+# Replace 'YOUR_MINICONDA_INSTALLER_SCRIPT.sh' with the actual filename of the Miniconda installer script
+MINICONDA_INSTALLER="YOUR_MINICONDA_INSTALLER_SCRIPT.sh"
+
+# Download Miniconda installer if it's not already downloaded
+if [ ! -f "$MINICONDA_INSTALLER" ]; then
+    wget https://repo.anaconda.com/miniconda/"$MINICONDA_INSTALLER"
+fi
+
+# Make the installer script executable
+chmod +x "$MINICONDA_INSTALLER"
+
+# Run the installer with default options
+./"$MINICONDA_INSTALLER"
+
+# Follow the installer's prompts to complete the installation
+
+# Add Miniconda to your PATH (you may need to restart your shell)
+echo 'export PATH="$HOME/miniconda3/bin:$PATH"' >> ~/.bashrc
+
+# Refresh the shell
+source ~/.bashrc
+
+# Verify the installation
+conda --version
+
+
+
+
+#!/bin/bash
+
+# Replace 'Miniconda3-latest-Linux-x86_64.sh' with the actual filename of the Miniconda installer script for your system
+MINICONDA_INSTALLER="Miniconda3-latest-Linux-x86_64.sh"
+
+# Download Miniconda installer if it's not already downloaded
+if [ ! -f "$MINICONDA_INSTALLER" ]; then
+    wget https://repo.anaconda.com/miniconda/"$MINICONDA_INSTALLER"
+fi
+
+# Make the installer script executable
+chmod +x "$MINICONDA_INSTALLER"
+
+# Run the installer with default options
+./"$MINICONDA_INSTALLER" -b -p $HOME/miniconda3
+
+# Add Miniconda to your PATH (you may need to restart your shell)
+echo 'export PATH="$HOME/miniconda3/bin:$PATH"' >> ~/.bashrc
+
+# Refresh the shell
+source ~/.bashrc
+
+# Verify the installation
+conda --version
+
+# Create and activate a new conda environment for MemGPT
+conda create -n memgpt python=3.8 -y
+conda activate memgpt
+
+# Clone the MemGPT repository within the conda environment
+git clone https://github.com/cpacker/MemGPT.git
+
+# Change your current directory to the MemGPT folder
+cd MemGPT
+
+# Install the required dependencies within the conda environment
+pip install -r requirements.txt
+
+# Set your HuggingFace API key as an environment variable (replace YOUR_HF_API_KEY with your actual HuggingFace API key)
+export HUGGINGFACE_API_KEY=YOUR_HF_API_KEY
+
+# Run MemGPT in CLI mode
+python3 main.py

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+curl https://ollama.ai/install.sh | sh
+
+ollama run codellama
+ollama run llama2
+ollama run sqlcoder

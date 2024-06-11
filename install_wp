@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Define variables
+domain="localhost"
+db_name="wordpress"
+db_user="jeremy"
+db_password="hacker"
+wp_admin_user="admin"
+wp_admin_password="admin"
+wp_admin_email="admin@localhost"
+
+# Download and extract WordPress
+wget https://wordpress.org/latest.tar.gz
+tar -xzvf latest.tar.gz
+rm latest.tar.gz
+
+# Move WordPress files to the web server directory
+sudo mv wordpress/* /var/www/html/$domain/public_html/
+sudo chown -R www-data:www-data /var/www/html/$domain/public_html/
+sudo chmod -R 755 /var/www/html/$domain/public_html/
+
+# Create MySQL database and user
+mysql -u root -p -e "CREATE DATABASE $db_name;"
+mysql -u root -p -e "CREATE USER '$db_user'@'localhost' IDENTIFIED BY '$db_password';"
+mysql -u root -p -e "GRANT ALL PRIVILEGES ON $db_name.* TO '$db_user'@'localhost';"
+mysql -u root -p -e "FLUSH PRIVILEGES;"
+
+# Configure wp-config.php
+cp /var/www/html/$domain/public_html/wp-config-sample.php /var/www/html/$domain/public_html/wp-config.php
+sed -i "s/database_name_here/$db_name/g" /var/www/html/$domain/public_html/wp-config.php
+sed -i "s/username_here/$db_user/g" /var/www/html/$domain/public_html/wp-config.php
+sed -i "s/password_here/$db_password/g" /var/www/html/$domain/public_html/wp-config.php
+
+# Complete WordPress installation
+curl -d "weblog_title=$domain&user_name=$wp_admin_user&admin_password=$wp_admin_password&admin_password2=$wp_admin_password&admin_email=$wp_admin_email&Submit=Install+WordPress" http://$domain/wp-admin/install.php?step=2
+
+echo "WordPress installation completed."

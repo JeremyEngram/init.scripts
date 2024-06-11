@@ -1,0 +1,66 @@
+#!/bin/bash
+
+# Function to check the status of the last executed command
+check_status() {
+    if [ $? -eq 0 ]; then
+        echo "[+] $1 successful."
+    else
+        echo "[-] $1 failed."
+        exit 1
+    fi
+}
+
+# Ensure the script is run as root
+if [ "$(id -u)" != "0" ]; then
+    echo "This script must be run as root" 1>&2
+    exit 1
+fi
+
+# Update and Upgrade the System
+echo "Updating and upgrading your system..."
+apt-get update && apt-get upgrade -y
+check_status "System update and upgrade"
+
+# Install Apache2
+echo "Installing Apache2..."
+apt-get install apache2 -y
+check_status "Apache2 installation"
+
+# Enable Apache2 Mods
+echo "Enabling Apache2 modules..."
+a2enmod rewrite
+check_status "Enabling mod_rewrite"
+a2enmod ssl
+check_status "Enabling mod_ssl"
+
+# Install PHP and common extensions
+echo "Installing PHP and common extensions..."
+apt-get install -y php libapache2-mod-php php-mysql php-cli php-curl php-json php-gd php-mbstring php-xml php-xmlrpc php-zip
+check_status "PHP and common extensions installation"
+
+# Restart Apache to apply changes
+echo "Restarting Apache to apply changes..."
+systemctl restart apache2
+check_status "Restarting Apache2"
+
+# Install MariaDB
+echo "Installing MariaDB server..."
+apt-get install mariadb-server -y
+check_status "MariaDB server installation"
+
+# Secure MariaDB installation
+echo "Securing MariaDB installation..."
+mysql_secure_installation
+check_status "Securing MariaDB installation"
+
+# Install Certbot for Let's Encrypt SSL certificates
+echo "Installing Certbot for Let's Encrypt SSL certificates..."
+apt-get install -y certbot python3-certbot-apache
+check_status "Certbot installation"
+
+# Instructions for using Certbot
+echo "Certbot installation complete."
+echo "Use 'sudo certbot --apache' to obtain and install your certificates."
+
+# Installation complete
+echo "LAMP stack with Certbot and MariaDB installation is complete."

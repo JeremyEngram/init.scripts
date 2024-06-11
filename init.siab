@@ -1,0 +1,120 @@
+#!/bin/bash
+ sudo apt install openssl shellinabox
+sudo apt install shellinabox shellinaboxd
+sudo /etc/init.d/shellinabox start
+
+# yum install git openssl-devel pam-devel zlib-devel autoconf automake libtool
+# git clone https://github.com/shellinabox/shellinabox.git && cd shellinabox
+# autoreconf -i
+# ./configure && make
+
+# sudo nano /etc/default/shellinabox
+
+echo '
+# Should shellinaboxd start automatically
+SHELLINABOX_DAEMON_START=1
+
+# TCP port that shellinboxd's webserver listens on
+SHELLINABOX_PORT=6175
+
+# Parameters that are managed by the system and usually should not need
+# changing:
+# SHELLINABOX_DATADIR=/var/lib/shellinabox
+# SHELLINABOX_USER=shellinabox
+# SHELLINABOX_GROUP=shellinabox
+
+# Any optional arguments (e.g. extra service definitions).  Make sure
+# that that argument is quoted.
+#
+#   Beeps are disabled because of reports of the VLC plugin crashing
+#   Firefox on Linux/x86_64.
+SHELLINABOX_ARGS="--no-beep"
+
+# specify the IP address of an SSH server
+OPTS="-s /:SSH:192.168.0.140"
+
+# if you want to restrict access to shellinaboxd from localhost only
+OPTS="-s /:SSH:192.168.0.140 --localhost-only"
+' > /etc/default/shellinabox
+
+
+
+$ sudo systemctl restart shellinabox
+$ sudo systemctl status shellinabox
+
+
+sudo netstat -nap | grep shellinabox
+
+
+
+
+
+#!/bin/bash
+
+# Function to check the status of the last executed command
+check_status() {
+    if [ $? -eq 0 ]; then
+        echo "[+] $1 successful."
+    else
+        echo "[-] $1 failed."
+        exit 1
+    fi
+}
+
+# Update the package list and install necessary packages
+echo "[+] Installing necessary packages..."
+sudo apt update
+sudo apt install -y openssl shellinabox
+check_status "Package installation"
+
+# Start shellinabox service
+echo "[+] Starting shellinabox service..."
+sudo systemctl start shellinabox
+check_status "Starting shellinabox service"
+
+# Configuring shellinabox
+echo "[+] Configuring shellinabox..."
+sudo bash -c 'cat > /etc/default/shellinabox <<EOF
+# Should shellinaboxd start automatically
+SHELLINABOX_DAEMON_START=1
+
+# TCP port that shellinaboxd's webserver listens on
+SHELLINABOX_PORT=6175
+
+# Parameters that are managed by the system and usually should not need
+# changing:
+# SHELLINABOX_DATADIR=/var/lib/shellinabox
+# SHELLINABOX_USER=shellinabox
+# SHELLINABOX_GROUP=shellinabox
+
+# Any optional arguments (e.g. extra service definitions). Make sure
+# that that argument is quoted.
+#
+# Beeps are disabled because of reports of the VLC plugin crashing
+# Firefox on Linux/x86_64.
+SHELLINABOX_ARGS="--no-beep"
+
+# Specify the IP address of an SSH server
+OPTS="-s /:SSH:192.168.0.140"
+
+# If you want to restrict access to shellinaboxd from localhost only
+# Uncomment the following line
+# OPTS="-s /:SSH:192.168.0.140 --localhost-only"
+EOF'
+check_status "Configuring shellinabox"
+
+# Restart and check the status of the shellinabox service
+echo "[+] Restarting shellinabox service..."
+sudo systemctl restart shellinabox
+check_status "Restarting shellinabox service"
+
+echo "[+] Checking shellinabox service status..."
+sudo systemctl status shellinabox
+check_status "Checking shellinabox service status"
+
+# Verify that shellinabox is listening on the specified port
+echo "[+] Verifying shellinabox is running on the correct port..."
+sudo netstat -nap | grep shellinabox
+check_status "Verifying shellinabox port"
+
+echo "[+] Shellinabox setup completed successfully!"

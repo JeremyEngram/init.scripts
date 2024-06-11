@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Function to check the status of the last executed command
+check_status() {
+    if [ $? -eq 0 ]; then
+        echo "[+] $1 successful."
+    else
+        echo "[-] $1 failed."
+        exit 1
+    fi
+}
+
+# Download the docker-compose.yaml file from the Swirl GitHub repository
+echo "[+] Downloading docker-compose.yaml file..."
+wget -O docker-compose.yaml https://github.com/swirlai/swirl-search/raw/main/docker-compose.yaml
+check_status "Downloading docker-compose.yaml"
+
+# Pull the Docker images and start the containers
+echo "[+] Pulling Docker images and starting the containers..."
+sudo docker-compose pull && sudo docker-compose up -d
+check_status "Pulling Docker images and starting containers"
+
+# Verify that the Docker containers are running
+echo "[+] Verifying Docker containers are running..."
+sudo docker ps
+check_status "Verifying Docker containers"
+
+# Display instructions for accessing Swirl
+echo "[+] Swirl is now running in Docker."
+echo "You can access it at http://localhost:8000"
+
+# Optionally open the browser automatically (uncomment if desired)
+# xdg-open http://localhost:8000

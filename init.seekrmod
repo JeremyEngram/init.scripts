@@ -1,0 +1,13 @@
+#!/bin/bash
+
+docker pull ghcr.io/seekr-osint/seekr:latest
+docker run -p 8569:8569 ghcr.io/seekr-osint/seekr:latest
+
+
+
+sudo apt install go golang
+
+cd /opt
+git clone https://github.com/seekr-osint/seekr
+cd seekr
+go run main.go

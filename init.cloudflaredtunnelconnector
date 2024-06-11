@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Step 1: Download and install Cloudflared
+curl -L --output cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
+sudo dpkg -i cloudflared.deb
+
+# Step 2: Install Cloudflared service with the provided token
+CLOUDFLARED_TOKEN="eyJhIjoiN2QwMWMxZTc0M2RhNDE0YzEwODFiNmVmYmM4NjE1N2YiLCJ0IjoiZTQ4MGU4NDgtNGRjNC00ZTI5LWJkMjAtNThkOGMzNzc3NjQ1IiwicyI6IlpqRTRZekUyTXpRdFpXWXpNUzAwT1RWbExUazBabUV0WWpWaFltWTBOalF6TXpnMiJ9"
+sudo cloudflared service install $CLOUDFLARED_TOKEN
+
+# Step 3: Start the Cloudflared service
+sudo systemctl start cloudflared
+
+# Step 4: Reinstall the Cloudflared service (if necessary)
+sudo cloudflared service install $CLOUDFLARED_TOKEN
+
+# Step 5: Update /etc/resolv.conf with new DNS entries
+echo '172.64.36.1 172.64.36.2' | sudo tee -a /etc/resolv.conf

@@ -1,0 +1,3 @@
+#!/bin/bash
+figlet "OpenInterpreter"
+curl -o oi-linux-installer.sh https://raw.githubusercontent.com/KillianLucas/open-interpreter/main/installers/oi-linux-installer.sh && chmod +x oi-linux-installer.sh && ./oi-linux-installer.sh && rm oi-linux-installer.sh

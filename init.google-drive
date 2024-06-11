@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Step 1: Download and install gdrive
+echo "Downloading gdrive..."
+wget -O gdrive https://github.com/gdrive-org/gdrive/releases/download/2.1.0/gdrive-linux-x64
+chmod +x gdrive
+sudo install gdrive /usr/local/bin/gdrive
+
+# Step 2: Authenticate gdrive with your Google Account
+gdrive about
+
+echo "Google Drive installation completed."

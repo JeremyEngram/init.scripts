@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# Step 1: Install Java Development Kit (JDK)
+sudo apt-get update
+sudo apt-get install default-jdk -y
+
+# Step 2: Download and extract Apache Nutch
+NUTCH_VERSION="2.4"
+NUTCH_HOME="/opt/nutch"
+wget https://www.apache.org/dist/nutch/${NUTCH_VERSION}/apache-nutch-${NUTCH_VERSION}.bin.tar.gz
+tar -xvzf apache-nutch-${NUTCH_VERSION}.bin.tar.gz
+sudo mv apache-nutch-${NUTCH_VERSION} ${NUTCH_HOME}
+
+# Step 3: Set Nutch environment variables
+echo "export NUTCH_HOME=${NUTCH_HOME}" >> ~/.bashrc
+echo 'export PATH=${NUTCH_HOME}/bin:$PATH' >> ~/.bashrc
+source ~/.bashrc
+
+# Step 4: Configure Apache Nutch
+cd ${NUTCH_HOME}/conf
+
+# Edit nutch-site.xml file
+cp nutch-site.xml.template nutch-site.xml
+echo "<property><name>http.agent.name</name><value>MySearchBot</value></property>" >> nutch-site.xml
+echo "<property><name>plugin.includes</name><value>protocol-http|urlfilter-regex|parse-(html|tika)|index-(basic|anchor)|scoring-opic|urlnormalizer-(pass|regex|basic)</value></property>" >> nutch-site.xml
+echo "<property><name>storage.data.store.class</name><value>org.apache.gora.memory.store.MemStore</value></property>" >> nutch-site.xml
+
+# Edit regex-urlfilter.txt file
+cp regex-urlfilter.txt.template regex-urlfilter.txt
+echo "+^http://([a-z0-9]*\.)*yourdomain\.com/" >> regex-urlfilter.txt
+
+# Step 5: Start Apache Nutch
+nutch inject crawl/crawldb urls
+nutch generate crawl/crawldb crawl/segments
+nutch fetch crawl/segments/*
+nutch parse crawl/segments/*
+nutch updatedb crawl/crawldb crawl/segments/*
+nutch index crawl/crawldb -linkdb crawl/linkdb crawl/segments/*
+nutch dedup crawl/crawldb
+
+# Step 6: Run Apache Nutch
+nutch crawl urls -dir crawl -depth 3 -topN 10
+
+# Step 7: Verify the search results
+nutch readseg -dump crawl/segments/* output -nofetch -noparse -noparsedata

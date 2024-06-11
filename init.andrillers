@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# Installation commands for Ubuntu/Debian
+ubuntu_debian_install() {
+  echo "Installing required packages on Ubuntu/Debian"
+  sudo apt-get install android-tools-adb python3-tk
+}
+
+# Installation commands for Mac (Homebrew)
+mac_install() {
+  echo "Installing required packages on Mac"
+  brew install android-platform-tools
+}
+
+# Create and activate virtual environment
+create_virtual_environment() {
+  echo "Creating virtual environment"
+  python3 -m venv env
+  
+  echo "Activating virtual environment"
+  source env/bin/activate
+}
+
+# Install or upgrade Andriller
+install_andriller() {
+  echo "Installing/upgrading Andriller"
+  pip install andriller -U
+}
+
+# Run Andriller GUI
+run_andriller_gui() {
+  echo "Running Andriller GUI"
+  python -m andriller
+}
+
+# Main script logic
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  ubuntu_debian_install
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+  mac_install
+elif [[ "$OSTYPE" == "msys"* || "$OSTYPE" == "cygwin"* || "$OSTYPE" == "win32" ]]; then
+  echo "Windows installation: Included."
+else
+  echo "Unsupported operating system"
+  exit 1
+fi
+
+create_virtual_environment
+install_andriller
+run_andriller_gui

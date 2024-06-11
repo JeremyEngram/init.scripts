@@ -1,0 +1,88 @@
+# Instrukt - Terminal AI Commander
+
+Instrukt is a terminal-based AI integrated environment that allows you to create and instruct modular AI agents, generate document indexes for question-answering, and create and attach tools to any agent. It provides a platform to work with AI agents, index documents, and perform various tasks via natural language instructions.
+
+![Instrukt Demo](assets/images/coding.assistant.example.mp4)
+
+Please note that Instrukt is a work in progress, and you may encounter bugs and API changes.
+
+## Introduction
+
+Instrukt offers the following capabilities:
+
+- **Custom AI Agents:** Design custom AI agents and tools. These agents are simple Python packages that can be extended and shared with others.
+- **Keyboard and Mouse Terminal Interface:** Instrukt provides a terminal-based interface for instructing AI agents, with rich and colorful output that supports markdown and source code. It can be run on bare metal or in Docker containers with CUDA support.
+- **Chat with Code and Documents:** You can index your data and let agents retrieve it for question-answering. Instrukt makes it easy to create, organize, and manage your document indexes.
+- **Tools:** You can use predefined tools or design your own tools, attaching or detaching them to agents as needed.
+- **Prompt Console:** Instrukt features an integrated REPL-Prompt for quick interaction with agents, allowing you to automate repetitive tasks with custom commands.
+- **LangChain:** Leverage the LangChain ecosystem to automate various tasks.
+- **Secure Containers:** Run agents inside secure Docker containers for safety and privacy.
+- **Developer Console:** Debug and introspect agents using an in-built IPython console.
+
+## Installation
+
+To get started with Instrukt, follow these steps:
+
+1. Install Instrukt with all dependencies:
+
+    ```bash
+    pip install instrukt[all]
+    ```
+
+2. Set your OpenAI API key:
+
+    ```bash
+    export OPENAI_API_KEY=your_api_key
+    ```
+
+3. Run Instrukt:
+
+    ```bash
+    instrukt
+    ```
+
+4. If the color scheme is broken, you can export the TERM environment variable:
+
+    ```bash
+    export TERM=xterm-256color
+    ```
+
+A configuration file will be created at `~/.config/instrukt/instrukt.yml`.
+
+## Supported Platforms
+
+Instrukt is supported on Linux, Mac, and Windows (tested under WSL2).
+
+## LLM Models
+
+Currently, Instrukt supports OpenAI models. Private local models are planned for the future.
+
+## Roadmap
+
+Instrukt's roadmap includes features like private local LLM models, indexing and embeddings enhancements, and extensive documentation.
+
+## Contributing
+
+You can contribute to Instrukt by testing, reporting issues, creating pull requests, or improving documentation.
+
+## Patreon
+
+Support the development of Instrukt on Patreon to help bring planned features to life.
+
+## Social
+
+Join the Instrukt Discord server to stay updated on the project's progress and seek assistance.
+
+## Vision
+
+Instrukt's vision is to make AI accessible to everyone without relying on big corporations and SaaS services. It aims to empower users with the choice to opt for local models and self-hosted services.
+
+## License
+
+Instrukt is licensed under the AGPL-3.0 license. It can be used for any purpose, but public instances must provide access to the source code, including modifications.
+
+---
+
+Copyright © 2023 Chakib Ben Ziane. All Rights Reserved.
+
+For more details, visit the Instrukt website.

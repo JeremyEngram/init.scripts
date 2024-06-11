@@ -1,0 +1,55 @@
+#!/bin/bash
+
+set -e  # Exit immediately if a command exits with a non-zero status
+
+# Function to check if a command is available
+command_exists() {
+    command -v "$1" &>/dev/null
+}
+
+# Check if python3 and pip3 are installed
+if ! command_exists python3 || ! command_exists pip3; then
+    echo "Python 3 or pip3 is not installed. Please install them."
+    exit 1
+fi
+
+# Install dependencies
+sudo apt-get update
+sudo apt-get install -y python3-pip git
+
+# Function to clone repositories and setup projects
+clone_and_setup() {
+    local repo_url=$1
+    local project_name=$2
+
+    # Clone the repository from GitHub
+    git clone "$repo_url" "$project_name"
+
+    # Switch to the project directory
+    cd "$project_name"
+
+    # Install the project using pip
+    python3 -m pip install -e .
+
+    # Run the project development server in the background
+    python3 "$project_name" dev &
+
+    # Return to the previous directory
+    cd ..
+}
+
+# Clone and setup FastAPI
+clone_and_setup "https://github.com/encode/fastapi.git" "fastapi"
+
+# Clone and setup LangChain
+clone_and_setup "https://github.com/LangChain/LangChain.git" "LangChain"
+
+# Clone and setup LangFlow
+clone_and_setup "https://github.com/LangFlow/LangFlow.git" "LangFlow"
+
+# Clone and setup Flowise
+clone_and_setup "https://github.com/Flowise/Flowise.git" "Flowise"
+
+# Wait for background processes to finish
+wait
+

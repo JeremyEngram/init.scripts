@@ -1,0 +1,21 @@
+from setuptools import setup, find_packages
+
+setup(
+    name='forensic-analysis-tool',
+    version='1.0.0',
+    description='Python forensic analysis tool',
+    author='Your Name',
+    author_email='your@email.com',
+    packages=find_packages(),
+    install_requires=[
+        'pytsk3',
+        'pyewf',
+        'dfvfs',
+        'plaso',
+    ],
+    entry_points={
+        'console_scripts': [
+            'forensic-analysis-tool = forensic_analysis_tool:main',
+        ],
+    },
+)

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Create a directory for your project
+mkdir gorilla
+cd gorilla
+
+# Create a virtual environment named 'venv'
+python3 -m venv gorilla_venv
+
+# Activate the virtual environment
+source gorila_venv/bin/activate
+
+# Install gorilla-cli within the virtual environment
+pip install gorilla-cli --user --no-binary :all:
+

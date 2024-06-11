@@ -1,0 +1,87 @@
+#!/bin/bash
+
+# Define your domain name
+DOMAIN_NAME="dc1local.omniscient.lan"
+
+# Get the current hostname of the system
+HOSTNAME=$(hostname)
+
+# IP address to associate with the domain name
+# Usually, it's 127.0.0.1 for localhost, but it could be any local IP
+IP_ADDRESS="127.0.0.1"
+
+# Backup the existing /etc/hosts file
+sudo cp /etc/hosts /etc/hosts.backup
+
+# Check if the domain name already exists in /etc/hosts
+if grep -q "$DOMAIN_NAME" /etc/hosts; then
+    echo "$DOMAIN_NAME already exists in /etc/hosts, no changes made."
+else
+    # Append the domain name to the /etc/hosts file
+    echo "Adding $DOMAIN_NAME to /etc/hosts."
+    echo "$IP_ADDRESS $DOMAIN_NAME" | sudo tee -a /etc/hosts > /dev/null
+    
+    # Optionally, map the domain to the hostname as well
+    echo "$IP_ADDRESS $HOSTNAME" | sudo tee -a /etc/hosts > /dev/null
+    
+    echo "$DOMAIN_NAME and $HOSTNAME have been added to your /etc/hosts file."
+fi
+
+echo "Setup complete. You may need to restart any services or browsers to recognize the new domain."
+
+
+
+
+
+#!/bin/bash
+
+set -e  # Exit immediately if a command exits with a non-zero status
+
+# Define your domain name
+DOMAIN_NAME="dc1local.omniscient.lan"
+
+# Get the current hostname of the system
+HOSTNAME=$(hostname)
+
+# IP address to associate with the domain name
+# Usually, it's 127.0.0.1 for localhost, but it could be any local IP
+IP_ADDRESS="127.0.0.1"
+
+# Function to backup /etc/hosts file
+backup_hosts_file() {
+    echo "Backing up /etc/hosts file..."
+    sudo cp /etc/hosts /etc/hosts.backup
+}
+
+# Function to check if a domain exists in /etc/hosts
+domain_exists() {
+    local domain=$1
+    grep -q "$domain" /etc/hosts
+}
+
+# Function to add a domain to /etc/hosts
+add_domain_to_hosts() {
+    local ip_address=$1
+    local domain=$2
+
+    echo "Adding $domain to /etc/hosts..."
+    echo "$ip_address $domain" | sudo tee -a /etc/hosts > /dev/null
+}
+
+# Main function to execute setup steps
+main() {
+    backup_hosts_file
+
+    if domain_exists "$DOMAIN_NAME"; then
+        echo "$DOMAIN_NAME already exists in /etc/hosts, no changes made."
+    else
+        add_domain_to_hosts "$IP_ADDRESS" "$DOMAIN_NAME"
+        add_domain_to_hosts "$IP_ADDRESS" "$HOSTNAME"
+        echo "$DOMAIN_NAME and $HOSTNAME have been added to your /etc/hosts file."
+    fi
+
+    echo "Setup complete. You may need to restart any services or browsers to recognize the new domain."
+}
+
+# Execute main function
+main

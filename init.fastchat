@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -e  # Exit immediately if a command exits with a non-zero status
+
+# Step 1: Install dependencies
+sudo apt update
+sudo apt install -y git build-essential cmake libssl-dev
+
+# Step 2: Clone FastChat repository
+git clone https://github.com/lm-sys/FastChat.git
+
+# Step 3: Change to FastChat directory
+cd FastChat
+
+# Step 4: Build FastChat
+mkdir build
+cd build
+cmake ..
+make
+
+# Step 5: Install FastChat
+sudo make install
+
+# Step 6: Clean up
+cd ../..
+rm -rf FastChat
+
+echo "FastChat has been installed!"
