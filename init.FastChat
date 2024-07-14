@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Exit on any error
+set -e
+
+# Clone the repository and navigate to the FastChat folder
+git clone https://github.com/lm-sys/FastChat.git
+cd FastChat
+
+# Install dependencies for Mac (uncomment if using macOS)
+# brew install rust cmake
+
+# Upgrade pip and install FastChat
+pip3 install --upgrade pip
+pip3 install -e ".[model_worker,webui]"
+
+echo "FastChat installation completed."

@@ -1,0 +1,52 @@
+#!/bin/bash
+
+# Logging start
+logger "Installation script started: Updating system packages"
+
+# Update system packages
+sudo apt update && sudo apt upgrade -y
+logger "System packages updated successfully"
+
+# Install essential packages
+sudo apt install -y python3 python3-pip python3-venv git
+logger "Essential packages installed: python3, python3-pip, python3-venv, git"
+
+# Create and activate a virtual environment for LangChain
+python3 -m venv ~/langchain-env
+source ~/langchain-env/bin/activate
+logger "Virtual environment created and activated for LangChain"
+
+# Install LangChain
+pip install langchain
+logger "LangChain installed in virtual environment"
+
+# Clone, setup, and install FastAPI
+git clone https://github.com/encode/fastapi.git ~/fastapi
+logger "FastAPI repository cloned"
+cd ~/fastapi
+pip install -e .
+logger "FastAPI setup and installed"
+
+# Clone, setup, and install LangChain (assuming additional setup is required)
+git clone https://github.com/LangChain/LangChain.git ~/LangChain
+logger "LangChain repository cloned"
+cd ~/LangChain
+pip install -e .
+logger "LangChain setup and installed"
+
+# Clone, setup, and install LangFlow
+git clone https://github.com/LangFlow/LangFlow.git ~/LangFlow
+logger "LangFlow repository cloned"
+cd ~/LangFlow
+pip install -e .
+logger "LangFlow setup and installed"
+
+# Deactivate the virtual environment
+deactivate
+logger "Virtual environment deactivated"
+
+# Logging end
+logger "Installation script completed successfully"
+
+echo "Installation and setup completed. Check /var/log/syslog for detailed log entries."
+

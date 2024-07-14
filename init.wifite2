@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Define the GitHub repository URL
+REPO_URL="https://github.com/derv82/wifite2.git"
+
+# Define the directory where you want to clone Wifite2
+CLONE_DIR="$HOME/wifite2"
+
+# Clone the repository
+echo "Cloning Wifite2 from GitHub..."
+git clone $REPO_URL $CLONE_DIR
+
+# Check if the cloning was successful
+if [ -d "$CLONE_DIR" ]; then
+    echo "Successfully cloned Wifite2. Installing now..."
+    cd $CLONE_DIR
+
+    # Install Wifite2
+    sudo python3 setup.py install
+    echo "Wifite2 installation complete."
+    sudo python3 Wifite.py
+else
+    echo "Failed to clone Wifite2. Please check if git is installed and you have internet access."
+fi

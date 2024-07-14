@@ -1,0 +1,28 @@
+# Create a directory for your virtual environment (replace 'memgpt-venv' with your desired name)
+mkdir memgpt-venv
+
+# Navigate to the virtual environment directory
+cd memgpt-venv
+
+# Create a virtual environment using Python (make sure you have Python installed)
+python -m venv venv
+
+# Activate the virtual environment (on Linux)
+source venv/bin/activate
+
+# Activate the virtual environment (on Windows)
+venv\Scripts\activate
+
+# Now, you are in the virtual environment. You should see (venv) in your terminal prompt.
+
+# Clone the MemGPT repository within the virtual environment
+git clone https://github.com/cpacker/MemGPT.git
+
+# Change your current directory to the MemGPT folder
+cd MemGPT
+
+# Install the required dependencies within the virtual environment
+pip install -r requirements.txt
+
+# Run MemGPT in CLI mode
+python3 main.py

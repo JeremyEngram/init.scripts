@@ -1,0 +1,45 @@
+#!/bin/bash
+
+#terminal user interfaces to be integrated with shellinabox siab pkgs
+
+git clone https://github.com/JeremyEngram/DeepFaceLab
+git clone https://github.com/naimo84/awesome-nodered
+git clone https://github.com/nomic-ai/gpt4all-datalake
+git clone https://github.com/JeremyEngram/omniscient-nodejs-layout
+git clone https://github.com/dbeaver/cloudbeaver
+git clone https://github.com/moncho/dry
+git clone https://github.com/dylanaraps/fff
+git clone https://github.com/hashicorp/damon
+git clone https://github.com/irishmaestro/fubar
+git clone https://github.com/nicolargo/glances
+git clone https://github.com/allinurl/goaccess
+git clone https://github.com/slok/grafterm
+git clone https://github.com/jesseduffield/lazydocker
+git clone https://github.com/jarun/nnn
+git clone https://github.com/Syllo/nvtop
+git clone https://github.com/robinovitch61/wander
+git clone https://github.com/jwlodek/pyautogit
+git clone https://github.com/charmbracelet/bubbletea
+git clone https://github.com/gansm/finalcut
+git clone https://github.com/jroimartin/gocui
+git clone https://github.com/charmbracelet/gum
+git clone https://github.com/bczsalba/pytermgui
+git clone https://github.com/prompt-toolkit/python-prompt-toolkit
+git clone https://github.com/Textualize/textual
+git clone https://github.com/thermage/thermage
+git clone https://github.com/Cubified/tuibox
+git clone https://github.com/unicurses/unicurses
+git clone https://github.com/urwid/urwid
+git clone https://github.com/quackduck/devzat
+git clone https://github.com/mrusme/superhighway84
+git clone https://dystroy.org/broot/
+git clone https://github.com/koenvervloesem/humble-explorer
+git clone https://jrnl.sh/en/stable/
+git clone https://github.com/rastapasta/mapscii
+git clone https://github.com/PabloLec/neoss
+git clone https://dev.yorhel.nl/ncdu
+git clone https://github.com/gerstner-hub/rocket.term
+git clone https://github.com/PabloLec/recoverpy
+git clone https://github.com/mathaou/termdbms
+git clone https://github.com/gcla/termshark
+git clone https://github.com/rainbow-sh/tui-shop

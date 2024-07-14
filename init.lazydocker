@@ -1,0 +1,41 @@
+Setup (Once)
+
+asdf plugin add lazydocker https://github.com/comdotlinux/asdf-lazydocker.git
+
+For Install / Upgrade
+
+asdf list all lazydocker
+asdf install lazydocker latest
+asdf global lazydocker latest
+
+
+Go
+
+Required Go Version >= 1.16
+
+go install github.com/jesseduffield/lazydocker@latest
+
+Required Go version >= 1.8, <= 1.17
+
+go get github.com/jesseduffield/lazydocker
+
+
+
+
+docker run --rm -it -v \
+/var/run/docker.sock:/var/run/docker.sock \
+-v /yourpath:/.config/jesseduffield/lazydocker \
+lazyteam/lazydocker
+
+
+
+
+
+
+Don't forget to change /yourpath to an actual path you created to store lazydocker's config
+
+You can also use this docker-compose.yml
+
+You might want to create an alias, for example:
+
+echo "alias lzd='docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock

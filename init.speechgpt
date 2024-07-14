@@ -1,0 +1,7 @@
+
+
+git clone https://github.com/0nutation/SpeechGPT
+cd SpeechGPT
+conda create --name SpeechGPT python=3.8
+conda activate SpeechGPT
+pip install -r requirements.txt

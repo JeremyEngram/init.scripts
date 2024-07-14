@@ -1,0 +1,9 @@
+An fzf terminal UI for systemctl 
+
+
+wget -O ~/.bin/sysz https://github.com/joehillen/sysz/releases/latest/download/sysz
+chmod +x ~/.bin/sysz
+
+git clone https://github.com/joehillen/sysz.git
+cd sysz
+sudo make install # /usr/local/bin/sysz

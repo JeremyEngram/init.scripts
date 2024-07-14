@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Update the package lists
-sudo apt-get update
+sudo apt-get update && sudo apt install curl
 
 # Install VSCode's GPG key
 curl -sSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /usr/share/keyrings/microsoft-archive-keyring.gpg

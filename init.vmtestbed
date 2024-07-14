@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# Check if VirtualBox is installed
+if ! command -v VBoxManage &> /dev/null
+then
+    echo "VirtualBox could not be found. Please install it first."
+	sudo apt install virtualbox
+    exit 1
+fi
+
+# Define VM name and Ubuntu ISO path
+VM_NAME="vm_testbed"
+UBUNTU_ISO_PATH="ubuntu-22.04-desktop-amd64.iso"
+
+# Create VM
+VBoxManage createvm --name "$VM_NAME" --ostype Ubuntu_64 --register
+
+# Configure VM
+VBoxManage modifyvm "$VM_NAME" --memory 2048 --cpus 2 --vram 128
+VBoxManage modifyvm "$VM_NAME" --nic1 nat
+VBoxManage createhd --filename "~/VirtualBox VMs/$VM_NAME/$VM_NAME.vdi" --size 20000
+VBoxManage storagectl "$VM_NAME" --name "SATA Controller" --add sata --controller IntelAHCI
+VBoxManage storageattach "$VM_NAME" --storagectl "SATA Controller" --port 0 --device 0 --type hdd --medium "~/VirtualBox VMs/$VM_NAME/$VM_NAME.vdi"
+VBoxManage storagectl "$VM_NAME" --name "IDE Controller" --add ide
+VBoxManage storageattach "$VM_NAME" --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium "$UBUNTU_ISO_PATH"
+
+# Start the VM
+VBoxHeadless --startvm "$VM_NAME" &
+
+echo "Ubuntu VM is booting. Please proceed with manual installation."
+echo "After installation, login and execute the guest additions installation steps."
+
+
+# Download Ubuntu ISO if not found
+if [[ -z "$UBUNTU_ISO_PATH" ]]; then
+    echo "Ubuntu ISO not found. Downloading from official website..."
+    UBUNTU_ISO_URL="https://releases.ubuntu.com/22.04/ubuntu-22.04-desktop-amd64.iso" # Replace with the current version URL
+    UBUNTU_ISO_PATH="./ubuntu-22.04-desktop-amd64.iso" # Local path where ISO will be saved
+    wget "$UBUNTU_ISO_URL" -O "$UBUNTU_ISO_PATH"
+fi
+
+# Check if ISO download was successful
+if [[ ! -f "$UBUNTU_ISO_PATH" ]]; then
+    echo "Failed to find or download Ubuntu ISO."
+    exit 1
+fi

@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Check if VirtualBox is installed
+if ! command -v VBoxManage &> /dev/null
+then
+    echo "VirtualBox could not be found. Installing it now."
+    sudo apt install virtualbox
+    if ! command -v VBoxManage &> /dev/null; then
+        echo "Failed to install VirtualBox. Exiting."
+        exit 1
+    fi
+fi
+
+# Define VM name
+VM_NAME="vm_testbed"
+
+# Define and Check for Ubuntu ISO
+UBUNTU_ISO_PATH="ubuntu-22.04-desktop-amd64.iso"
+if [[ ! -f "$UBUNTU_ISO_PATH" ]]; then
+    echo "Ubuntu ISO not found. Downloading from official website..."
+    UBUNTU_ISO_URL="https://releases.ubuntu.com/22.04/ubuntu-22.04-desktop-amd64.iso" # Replace with the current version URL
+    wget "$UBUNTU_ISO_URL" -O "$UBUNTU_ISO_PATH"
+    if [[ ! -f "$UBUNTU_ISO_PATH" ]]; then
+        echo "Failed to download Ubuntu ISO. Exiting."
+        exit 1
+    fi
+fi
+
+# Create and Configure VM
+VBoxManage createvm --name "$VM_NAME" --ostype Ubuntu_64 --register
+# ... rest of VM configuration
+
+# Start the VM
+VBoxHeadless --startvm "$VM_NAME" &
+
+echo "Ubuntu VM is booting. Please proceed with manual installation."
+echo "After installation, login and execute the guest additions installation steps."

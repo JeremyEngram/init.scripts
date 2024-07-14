@@ -1,0 +1,3 @@
+#!/bin/bash
+
+wget https://gpt4all.io/installers/gpt4all-installer-linux.run; sudo chmod +x gpt4all-installer-linux.run; sudo ./gpt4all-installer-linux.ru

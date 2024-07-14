@@ -1,0 +1,55 @@
+#!/bin/bash
+
+# Updating Node.js using Node Version Manager (nvm)
+
+# Check if nvm is installed
+if ! command -v nvm &> /dev/null
+then
+    echo "nvm not found, installing now..."
+    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.32.1/install.sh | bash
+    export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+fi
+
+wait
+
+# Install the latest stable version of Node.js
+nvm install node
+
+# Set default Node.js version
+nvm alias default node
+
+echo "Node.js has been successfully updated."
+
+wait
+
+# Install LangChain on Linux/macOS
+
+# Update npm to the latest version
+npm install npm@latest -g
+
+# Install LangChain
+npm install -g langchain
+
+echo "LangChain installation complete."
+
+wait
+
+# Install LangFlow on Linux/macOS
+
+# Update npm to the latest version
+npm install npm@latest -g
+
+# Install LangFlow
+npm install -g langflow
+
+echo "LangFlow installation complete."
+
+wait 
+
+# Replace <package-manager> with your package manager 
+   npm inatall flowise
+   pip install flowise
+
+echo "Flowise installation complete."
+

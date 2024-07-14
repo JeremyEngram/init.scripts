@@ -1,4 +1,47 @@
+# Check system architecture
+arch=$(uname -m)
+
+if [ "$arch" == "i386" ]; then
+    curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null
+    echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list
+    sudo apt update
+    sudo apt install ngrok
+else
+    echo "This is not a 32-bit system."
+    
+ curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null && echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list && sudo apt update && sudo apt install ngrok
+fi
+
+
 #!/bin/bash
 
-cd /usr/local/bin; wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip; sudo chmod +x ngrok
-ngrok authtoken 1rEIYoWfDkbfrq4A7BDBsrT07vq_71be7Si4PupUsPWKQaA74
+# Check if ngrok is already installed
+if command -v ngrok &>/dev/null; then
+    echo "ngrok is already installed."
+    exit 0
+fi
+
+# Determine the system's architecture
+arch=$(uname -m)
+
+# Check if the system is 64-bit (x86_64) or 32-bit (i386)
+if [ "$arch" == "x86_64" ]; then
+    ngrok_arch="amd64"
+elif [ "$arch" == "i386" ]; then
+    ngrok_arch="386"
+else
+    echo "Unsupported system architecture: $arch"
+    exit 1
+fi
+
+# Download and install ngrok
+echo "Installing ngrok..."
+wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-$ngrok_arch.tgz -O ngrok.tgz
+tar -xzf ngrok.tgz
+sudo mv ngrok /usr/local/bin/
+rm ngrok.tgz
+
+echo "ngrok has been installed successfully."
+
+# Verify the installation
+ngrok -v

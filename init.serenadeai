@@ -1,0 +1,5 @@
+#!/bin/bash
+
+figlet "SerenadeAI"
+
+wget https://serenadecdn.com/app/Serenade-2.0.2.AppImage; sudo chmod +x Serenade*.AppImage; sudo ./Serenade*.AppImage

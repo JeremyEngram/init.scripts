@@ -1,23 +1,21 @@
 #!/bin/bash
 
-set -e  # Exit immediately if a command exits with a non-zero status
-
-# Define the path to the spooler output log
 spooler_output="/path/to/spooler/output.log"
 
-# Function to install a package and log the output
-install_package() {
-    local description=$1
-    local package=$2
+echo 'Debian Forensics Environment - essential components (metapackage)' | tee -a "$spooler_output"
+sudo apt install -y forensics-all >> "$spooler_output" 2>&1
 
-    echo "$description" | tee -a "$spooler_output"
-    sudo apt install -y "$package" >> "$spooler_output" 2>&1
-}
+echo 'Debian Forensics Environment - GUI components (metapackage)' | tee -a "$spooler_output"
+sudo apt install -y forensics-all-gui >> "$spooler_output" 2>&1
 
-# Install various forensics packages
-install_package 'Debian Forensics Environment - essential components (metapackage)' 'forensics-all'
-install_package 'Debian Forensics Environment - GUI components (metapackage)' 'forensics-all-gui'
-install_package 'Show differences between files using color graphics' 'forensics-colorize'
-install_package 'Forensics Environment - extra console components (metapackage)' 'forensics-extra'
-install_package 'Forensics Environment - extra GUI components (metapackage)' 'forensics-extra-gui'
-install_package 'Full forensics station (metapackage)' 'forensics-full'
+echo 'Show differences between files using color graphics' | tee -a "$spooler_output"
+sudo apt install -y forensics-colorize >> "$spooler_output" 2>&1
+
+echo 'Forensics Environment - extra console components (metapackage)' | tee -a "$spooler_output"
+sudo apt install -y forensics-extra >> "$spooler_output" 2>&1
+
+echo 'Forensics Environment - extra GUI components (metapackage)' | tee -a "$spooler_output"
+sudo apt install -y forensics-extra-gui >> "$spooler_output" 2>&1
+
+echo 'Full forensics station (metapackage)' | tee -a "$spooler_output"
+sudo apt install -y forensics-full >> "$spooler_output" 2>&1
