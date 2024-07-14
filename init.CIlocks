@@ -1,8 +1,18 @@
 #!/bin/bash
 
-sudo apt install -y adb; cd ~/Documents/eBooks; url2pdf https://www.kitploit.com/2021/05/cilocks-android-lockscreen-bypass.html kitploit-cilocks.pdf; cd 
+# Install adb if not already installed
+sudo apt install -y adb
 
-sudo -s <<< 'cd /opt; git clone git clone https://github.com/tegal1337/CiLocks.git'
+# Navigate to the eBooks directory and convert URL to PDF
+cd ~/Documents/eBooks
+url2pdf https://www.kitploit.com/2021/05/cilocks-android-lockscreen-bypass.html kitploit-cilocks.pdf
 
- cd CiLocks && sudo chmod +x cilocks && bash cilocks
+# Clone the CiLocks repository if it doesn't exist
+if [ ! -d "/opt/CiLocks" ]; then
+    sudo git clone https://github.com/tegal1337/CiLocks.git /opt/CiLocks
+fi
 
+# Change to the CiLocks directory and run the script
+cd /opt/CiLocks
+sudo chmod +x cilocks
+bash cilocks
