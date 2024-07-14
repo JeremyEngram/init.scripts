@@ -4,38 +4,18 @@
 setup_virtualenv() {
     # Generate a random name for the virtual environment
     venv_name="venv_$(date +%s%N | sha256sum | head -c8)"
-    
-    echo "[+] Creating virtual environment: $venv_name"
-    
+
     # Create the virtual environment
     python -m venv "$venv_name"
-    check_status "Creating virtual environment $venv_name"
 
     # Activate the virtual environment
     source "$venv_name/bin/activate"
-    check_status "Activating virtual environment $venv_name"
 
     # Install dependencies using pip
-    if [ -f requirements.txt ]; then
-        pip install -r requirements.txt
-        check_status "Installing dependencies in $venv_name"
-    else
-        echo "[-] requirements.txt not found. Skipping dependency installation."
-    fi
+    pip install -r requirements.txt
 
     # Deactivate the virtual environment
     deactivate
-    check_status "Deactivating virtual environment $venv_name"
-}
-
-# Function to check the status of the last executed command
-check_status() {
-    if [ $? -eq 0 ]; then
-        echo "[+] $1 successful."
-    else
-        echo "[-] $1 failed."
-        exit 1
-    fi
 }
 
 # Example usage in a for loop
@@ -44,9 +24,5 @@ for i in {1..5}; do
     setup_virtualenv
 done
 
-# Export PATH
-echo "[+] Exporting PATH"
-export PATH=$PATH:/home/jeremy/.local/bin
-check_status "Exporting PATH"
 
-echo "[+] All environments set up and PATH updated successfully!"
+export PATH=$PATH:/home/jeremy/.local/bin
