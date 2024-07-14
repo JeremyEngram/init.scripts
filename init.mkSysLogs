@@ -1,0 +1,6 @@
+
+sudo mkdir /var/log/nmap && sudo chmod 777 /var/log/nmap
+sudo touch /var/log/apt/search.log /var/log/apt/show.log /var/log/apt/implemented.log /var/log/commands.log
+sudo chown $user:$user /var/log/apt/search.log /var/log/apt/show.log /var/log/apt/implemented.log /var/log/commands.log
+sudo chmod 777 /var/log/apt/search.log /var/log/apt/show.log /var/log/apt/implemented.log /var/log/commands.log
+

@@ -1,10 +1,7 @@
 #!/bin/bash
 
 # Install the required dependencies
-python -m venv privategpt
-source privategpt/bin/activate
 pip3 install -r requirements.txt
-deactivate
 
 # Download the GPT4All model
 wget https://github.com/nomic-ai/gpt4all/releases/download/v1.3/ggml-gpt4all-j-v1.3-groovy.bin
@@ -22,65 +19,3 @@ MODEL_PATH=model/ggml-gpt4all-j-v1.3-groovy.bin" > .env
 
 # Start the PrivateGPT server
 python3 privategpt.py
-
-
-
-
-
-
-#!/bin/bash
-
-# Function to check the status of the last executed command
-check_status() {
-    if [ $? -eq 0 ]; then
-        echo "[+] $1 successful."
-    else
-        echo "[-] $1 failed."
-        exit 1
-    fi
-}
-
-# Install the required dependencies
-echo "[+] Setting up Python virtual environment..."
-python -m venv privategpt
-check_status "Virtual environment creation"
-
-source privategpt/bin/activate
-check_status "Virtual environment activation"
-
-pip install -r requirements.txt
-check_status "Installing dependencies"
-
-deactivate
-check_status "Deactivating virtual environment"
-
-# Download the GPT4All model
-echo "[+] Downloading the GPT4All model..."
-wget https://github.com/nomic-ai/gpt4all/releases/download/v1.3/ggml-gpt4all-j-v1.3-groovy.bin
-check_status "Model download"
-
-# Create a directory for the model
-echo "[+] Creating directory for the model..."
-mkdir -p model
-check_status "Model directory creation"
-
-# Move the model to the directory
-echo "[+] Moving model to the directory..."
-mv ggml-gpt4all-j-v1.3-groovy.bin model/
-check_status "Moving model file"
-
-# Create a .env file
-echo "[+] Creating .env file..."
-cat <<EOL > .env
-MODEL_TYPE=GPT4All
-PERSIST_DIRECTORY=./
-MODEL_PATH=model/ggml-gpt4all-j-v1.3-groovy.bin
-EOL
-check_status ".env file creation"
-
-# Start the PrivateGPT server
-echo "[+] Starting the PrivateGPT server..."
-python3 privategpt.py
-check_status "Starting PrivateGPT server"
-
-echo "[+] Setup complete."

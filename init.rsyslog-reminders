@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Install rsyslog if it's not already installed
+if ! command -v rsyslog >/dev/null; then
+  sudo apt-get update
+  sudo apt-get install -y rsyslog
+fi
+
+# Create the log file
+sudo touch /var/log/reminder.log
+
+# Set permissions for the log file
+sudo chmod 644 /var/log/reminder.log
+
+# Configure rsyslog to log reminders
+echo "cron.* /var/log/reminder.log" | sudo tee -a /etc/rsyslog.conf >/dev/null
+
+# Restart rsyslog service
+sudo systemctl restart rsyslog
+
+# Create the reminder script
+sudo tee /usr/local/bin/reminder_script.sh >/dev/null <<EOF
+#!/bin/bash
+logger -t cron "Reminder: Review yesterday's work"
+EOF
+sudo chmod +x /usr/local/bin/reminder_script.sh
+
+# Schedule the script to run daily at 9:00 AM
+(crontab -l 2>/dev/null; echo "0 9 * * * /usr/local/bin/reminder_script.sh") | crontab -
+
+echo "Installation completed."

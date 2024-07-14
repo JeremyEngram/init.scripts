@@ -1,0 +1,52 @@
+#!/bin/bash
+
+# Check if the script is being run as root
+if [[ $EUID -ne 0 ]]; then
+  echo "This script must be run as root."
+  exit 1
+fi
+
+# Install Logwatch using the appropriate package manager
+if command -v apt-get &> /dev/null; then
+  apt-get update
+  apt-get install logwatch -y
+elif command -v yum &> /dev/null; then
+  yum install logwatch -y
+else
+  echo "Unsupported package manager. Please install Logwatch manually."
+  exit 1
+fi
+
+# Configure Logwatch to send reports via email
+echo "Logwatch Configuration:"
+read -p "Enter the email address where you want to receive reports: " email
+
+if [ -z "$email" ]; then
+  echo "You must provide an email address for report delivery."
+  exit 1
+fi
+
+# Create a Logwatch configuration file
+cat <<EOF > /etc/logwatch/conf/logwatch.conf
+# Logwatch Configuration File
+MailTo = $email
+MailFrom = logwatch@example.com
+Print = Yes
+Range = yesterday
+Detail = High
+Service = All
+EOF
+
+# Optionally, you can customize Logwatch configuration further by editing /etc/logwatch/conf/logwatch.conf
+
+# Create a logwatch cron job to generate reports daily
+cat <<EOF > /etc/cron.daily/00logwatch
+#!/bin/bash
+/usr/sbin/logwatch --output mail
+EOF
+
+# Make the logwatch script executable
+chmod +x /etc/cron.daily/00logwatch
+
+# Inform the user that Logwatch has been configured
+echo "Logwatch has been installed and configured. Reports will be sent to $email."

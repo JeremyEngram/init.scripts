@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# Install Sendmail
+sudo apt-get update
+sudo apt-get install sendmail
+
+# Backup Sendmail configuration file
+sudo cp /etc/mail/sendmail.mc /etc/mail/sendmail.mc.bak
+
+# Edit Sendmail configuration
+sudo cp /etc/mail/sendmail.mc.bak /etc/mail/sendmail.mc
+echo "define(\`SMART_HOST', \`[smtp.gmail.com]')dnl" | sudo tee -a /etc/mail/sendmail.mc
+echo "define(\`RELAY_MAILER_ARGS', \`TCP \$h 587')dnl" | sudo tee -a /etc/mail/sendmail.mc
+echo "define(\`ESMTP_MAILER_ARGS', \`TCP \$h 587')dnl" | sudo tee -a /etc/mail/sendmail.mc
+echo "define(\`confAUTH_OPTIONS', \`A p')dnl" | sudo tee -a /etc/mail/sendmail.mc
+echo "TRUST_AUTH_MECH(\`EXTERNAL DIGEST-MD5 CRAM-MD5 LOGIN PLAIN')dnl" | sudo tee -a /etc/mail/sendmail.mc
+
+# Generate Sendmail configuration
+sudo m4 /etc/mail/sendmail.mc > /etc/mail/sendmail.cf
+
+# Create authentication info file
+echo "AuthInfo:smtp.gmail.com \"U:mrubuntuman@gmail.com\" \"I:mrubuntuman@gmail.com\" \"P:JeremyEngram585!!!\"" | sudo tee /etc/mail/authinfo/gmail-auth
+sudo makemap hash /etc/mail/authinfo/gmail-auth < /etc/mail/authinfo/gmail-auth
+
+# Set permissions
+sudo chmod 600 /etc/mail/authinfo/gmail-auth
+sudo chown root:smmsp /etc/mail/authinfo/gmail-auth
+
+# Restart Sendmail service
+sudo service sendmail restart
+
+# Display configuration details
+echo "Sendmail has been configured to relay emails through Google's SMTP servers."
+echo "You can modify further configuration settings in /etc/mail/sendmail.mc"
