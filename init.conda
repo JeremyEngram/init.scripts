@@ -1,16 +1,8 @@
 #!/bin/bash
 
-# Step 1: Create directory for Miniconda installation
 mkdir -p ~/miniconda3
-
-# Step 2: Download the latest Miniconda installer
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
-
-# Step 3: Run the Miniconda installer
 bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
-
-# Step 4: Remove the installer script
 rm -rf ~/miniconda3/miniconda.sh
 
-# Step 5: Initialize conda for bash
 ~/miniconda3/bin/conda init bash

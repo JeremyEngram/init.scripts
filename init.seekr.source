@@ -1,70 +1,14 @@
-#!/bin/bash
+git clone https://github.com/seekr-osint/seekr
+cd seekr
+go generate ./...
+tsc --project web
+go run main.go
 
-# Function to check the status of the last executed command
-check_status() {
-    if [ $? -eq 0 ]; then
-        echo "[+] $1 successful."
-    else
-        echo "[-] $1 failed."
-        exit 1
-    fi
-}
+Docker
 
-# Function to set up and run the application locally
-setup_local() {
-    echo "[+] Cloning the Seekr repository..."
-    git clone https://github.com/seekr-osint/seekr
-    check_status "Repository cloning"
+docker pull ghcr.io/seekr-osint/seekr:latest
+docker run -p 8569:8569 ghcr.io/seekr-osint/seekr:latest
 
-    cd seekr || { echo "[-] Directory seekr not found."; exit 1; }
 
-    echo "[+] Generating Go files..."
-    go generate ./...
-    check_status "Go files generation"
-
-    echo "[+] Compiling TypeScript files..."
-    tsc --project web
-    check_status "TypeScript compilation"
-
-    echo "[+] Running the application..."
-    go run main.go
-    check_status "Application startup"
-
-    echo "[+] Opening the application in browser..."
-    xdg-open http://localhost:8569
-    xdg-open http://localhost:8570
-}
-
-# Function to set up and run the application using Docker
-setup_docker() {
-    echo "[+] Pulling the Seekr Docker image..."
-    docker pull ghcr.io/seekr-osint/seekr:latest
-    check_status "Docker image pull"
-
-    echo "[+] Running the Docker container..."
-    docker run -p 8569:8569 ghcr.io/seekr-osint/seekr:latest
-    check_status "Docker container startup"
-
-    echo "[+] Opening the application in browser..."
-    xdg-open http://localhost:8569
-    xdg-open http://localhost:8570
-}
-
-# Main script logic to choose between local or Docker setup
-echo "Choose setup method:"
-echo "1) Local setup"
-echo "2) Docker setup"
-read -p "Enter your choice (1 or 2): " choice
-
-case $choice in
-    1)
-        setup_local
-        ;;
-    2)
-        setup_docker
-        ;;
-    *)
-        echo "Invalid choice. Please enter 1 or 2."
-        exit 1
-        ;;
-esac
+xdg-open http://localhost:8569
+xdg-open http://localhost:8570

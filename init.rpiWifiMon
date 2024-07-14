@@ -1,15 +1,5 @@
 #!/bin/bash
 
-# Function to check the status of the last executed command
-check_status() {
-    if [ $? -eq 0 ]; then
-        echo "[+] $1 successful."
-    else
-        echo "[-] $1 failed."
-        exit 1
-    fi
-}
-
 # Check if the script is running as root
 if [ "$EUID" -ne 0 ]; then
   echo "Please run this script as root."
@@ -17,27 +7,23 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 # Install required packages
-echo "[+] Installing necessary packages..."
-apt-get update && apt-get install -y dkms git build-essential linux-headers-$(uname -r)
-check_status "Package installation"
+echo "Installing necessary packages..."
+apt-get update
+apt-get install -y dkms git build-essential linux-headers-$(uname -r)
 
 # Clone the driver repository
-echo "[+] Cloning the driver repository..."
+echo "Cloning the driver repository..."
 git clone -b v5.6.4.2 https://github.com/aircrack-ng/rtl8812au.git
-check_status "Cloning driver repository"
-
-cd rtl8812au || { echo "[-] Directory rtl8812au not found."; exit 1; }
+cd rtl8812au
 
 # Build and install the driver using DKMS
-echo "[+] Building and installing the driver using DKMS..."
+echo "Building and installing the driver using DKMS..."
 make dkms_install
-check_status "Driver build and installation"
 
 # Clean up
-echo "[+] Cleaning up..."
+echo "Cleaning up..."
 cd ..
 rm -rf rtl8812au
-check_status "Cleanup"
 
-echo "[+] Driver installation completed successfully!"
+echo "Driver installation completed successfully!"
 

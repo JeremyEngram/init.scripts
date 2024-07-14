@@ -1,40 +1,22 @@
-#!/bin/bash
-
-set -e  # Exit immediately if a command exits with a non-zero status
-
-# Step 1: Download and install Node.js
 wget https://nodejs.org/dist/v20.9.0/node-v20.9.0-linux-x64.tar.xz
-tar -xf node-v20.9.0-linux-x64.tar.xz
-sudo mv node-v20.9.0-linux-x64 /usr/local/node-v20.9.0
-export PATH=/usr/local/node-v20.9.0/bin:$PATH
-
-# Step 2: Install Flowise globally using npm
 sudo npm install -g flowise
-
-# Step 3: Start Flowise without authentication
 npx flowise start
 
-# Step 4: Start Flowise with authentication
+
 npx flowise start --FLOWISE_USERNAME=user --FLOWISE_PASSWORD=1234
 xdg-open http://localhost:3000
 
-# Step 5: Build and run Flowise using Docker
 docker build --no-cache -t flowise .
 docker run -d --name flowise -p 4000:4000 flowise
 xdg-open http://localhost:4000
-
-# Stop the Docker container
 docker stop flowise
 
-# Step 6: Clone the Flowise repository
+
 git clone https://github.com/FlowiseAI/Flowise.git
 cd Flowise
-
-# Step 7: Install dependencies using Yarn
 yarn install
-
-# Step 8: Build the project
 yarn build
-
-# Step 9: Start the project
 yarn start
+
+
+

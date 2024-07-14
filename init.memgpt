@@ -46,42 +46,7 @@ cd MemGPT
 pip install -r requirements.txt
 
 # Set your OpenAI API key as an environment variable (replace YOUR_API_KEY with your actual API key)
-export OPENAI_API_KEY=$HF_TOKEN
-
-# Run MemGPT in CLI mode
-python3 main.py
-
-
-
-
-
-
-# Create and navigate to a directory for your virtual environment (replace 'memgpt-venv' with your desired name)
-mkdir memgpt-venv && cd memgpt-venv
-
-# Create a virtual environment using Python (make sure you have Python installed)
-python -m venv venv
-
-# Activate the virtual environment
-# For Linux/MacOS
-source venv/bin/activate
-
-# For Windows (Uncomment the line below if you are using Windows)
-# venv\Scripts\activate
-
-# Now, you are in the virtual environment. You should see (venv) in your terminal prompt.
-
-# Clone the MemGPT repository within the virtual environment directory
-git clone https://github.com/cpacker/MemGPT.git
-
-# Change your current directory to the MemGPT folder
-cd MemGPT
-
-# Install the required dependencies within the virtual environment
-pip install -r requirements.txt
-
-# Set your HuggingFace API key as an environment variable (replace YOUR_HF_API_KEY with your actual HuggingFace API key)
-export HUGGINGFACE_API_KEY=$hf_token
+export OPENAI_API_KEY=$HFTOKEN
 
 # Run MemGPT in CLI mode
 python3 main.py
